@@ -20,6 +20,7 @@ def skill_click(pos):
     mc.click(add(POS, pos))
 
 
+# 拖动按键
 button_attr = {
     # 摇杆
     'joystick': {
@@ -104,7 +105,7 @@ move_up_mappings = {
     keyboard.Key.down: lambda: mc.mouse_up(move_pos['down']),
 }
 
-# 技能
+# 点击出发技能
 key_mappings = {
     # 点击技能
     'x': lambda: skill_click((830, 385)),
