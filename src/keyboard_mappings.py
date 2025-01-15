@@ -2,6 +2,7 @@ import mouse_ctrl as mc
 
 from pynput import keyboard
 import game_board as gb
+import numpy as np
 
 flag = False
 
@@ -16,8 +17,15 @@ def add(*t):
     return tuple(map(lambda *p: sum(p), *t))
 
 
-def skill_click(pos):
-    mc.click(add(POS, pos))
+def skill_click(pos, threshold = 20):
+    mc.click(add(POS, get_random(pos, threshold)))
+
+
+def get_random(pos, threshold=18):
+    a = np.random.normal(loc =0.0 , scale= 6.0,size = (1,2))
+    if -threshold < a[0][0] < threshold or -threshold < a[0][1] < threshold  :
+        return add(pos, (a[0][0], a[0][1]))
+    return get_random(pos, threshold)
 
 
 # 拖动按键
@@ -111,23 +119,28 @@ key_mappings = {
     'x': lambda: skill_click((830, 385)),
     'c': lambda: skill_click((865, 330)),
     'v': lambda: skill_click((770, 415)),
-    'b': lambda: skill_click((770, 415)),
+
+    # 普通技能
     'a': lambda: skill_click((585, 405)),
     's': lambda: skill_click((650, 405)),
-    'd': lambda: skill_click((715, 340)),
-    'f': lambda: skill_click((735, 385)),
-    'g': lambda: skill_click((790, 290)),
-    '/': lambda: skill_click((850, 270)),
-    'q': lambda: skill_click((850, 210)),
-    'w': lambda: skill_click((850, 165)),
+    'd': lambda: skill_click((714, 407)),
+    'f': lambda: skill_click((735, 340)),
+    'g': lambda: skill_click((782, 290)),
+    'h': lambda: skill_click((850, 270)),
+    'b': lambda: skill_click((850, 210)),
+
+    # 扩展技能栏
+    'q': lambda: skill_click((720, 165)),
+    'w': lambda: skill_click((760, 165)),
     'e': lambda: skill_click((805, 165)),
-    'r': lambda: skill_click((760, 165)),
-    't': lambda: skill_click((720, 165)),
+    'r': lambda: skill_click((850, 165)),
+
+    # 普通攻击滑动技能
+    'z': lambda: mc.move(move_pos['base_up']['start'], move_pos['base_up']['end']),
+    '.': lambda: mc.move(move_pos['base_down']['start'], move_pos['base_down']['end']),
+    '/': lambda: mc.move(move_pos['base_right']['start'], move_pos['base_right']['end']),
 
     # 滑动技能
-    'z': lambda: mc.move(move_pos['base_up']['start'], move_pos['base_up']['end']),
-    'n': lambda: mc.move(move_pos['base_down']['start'], move_pos['base_down']['end']),
-
     '1': lambda: mc.move(move_pos['skill_up']['start'], move_pos['skill_up']['end']),
     '2': lambda: mc.move(move_pos['skill_down']['start'], move_pos['skill_down']['end']),
     '3': lambda: mc.move(move_pos['skill_left']['start'], move_pos['skill_left']['end']),
